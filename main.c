@@ -17,9 +17,8 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-//************* BASIC LED BLINKING USING ODR REGISTER ****************
 #include "main.h"
-#include <stdio.h>
+#include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -55,14 +54,13 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//********************LD2 IS CONNECTED TO PA5**********************
-//********************GPIOA POINTERS********************
 //clock enable for GPIOA
 volatile uint32_t* RCC_AHB1ENR=(volatile uint32_t*)0X40023830;
-//MODER register pointer
+//MODER register
 volatile uint32_t* GPIOA_MODER=(volatile uint32_t*)0X40020000;
-//ODR register pointer
-volatile uint32_t* GPIOA_ODR=(volatile uint32_t*)0X40020014;
+//BSRR register
+volatile uint32_t* GPIOA_BSRR=(volatile uint32_t*)0X40020018;
+
 
 /* USER CODE END 0 */
 
@@ -95,12 +93,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
-  //clock enable for GPIOA is bit0
   *RCC_AHB1ENR|=(1U<<0);
-  //configuring PA5 to output
   *GPIOA_MODER&=~((1U<<10)|(1U<<11));
   *GPIOA_MODER|=(1U<<10);
-
 
   /* USER CODE END 2 */
 
@@ -111,10 +106,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  *GPIOA_ODR|=(1U<<5);
+	  *GPIOA_BSRR|=(1U<<5);
 	  for(uint32_t i=0;i<50000;i++);
-	  *GPIOA_ODR&=~(1U<<5);
+	  *GPIOA_BSRR|=(1U<<(16+5));
 	  for(uint32_t i=0;i<50000;i++);
+
+
   }
   /* USER CODE END 3 */
 }
