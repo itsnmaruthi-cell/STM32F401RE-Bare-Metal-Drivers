@@ -17,6 +17,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+//************* BASIC LED BLINKING USING ODR REGISTER ****************
 #include "main.h"
 #include <stdio.h>
 
